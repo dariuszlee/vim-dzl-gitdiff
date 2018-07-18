@@ -1,21 +1,41 @@
 function! GitDiff()
 	" TODO add Vim-fugitive check and if we are in a valid git repo (ugly if
 	" it isn't
+    if !s:IsFugitiveInstalled()
+        echom "Please install vim-fugitive. Exiting"
+        return 
+    endif
 
 	execute ':Gsplit! diff --name-only HEAD HEAD^'
+    let l:currentBuf = s:GetCurrentBuffer()
 	let l:lines = getline(line('^'), line('$'))
 	for line in l:lines
 		execute ':tabedit ' . line
 		execute ':Gdiff HEAD^'
 	endfor
-	execute ':tabnext'
-	execute ':bdelete'
+    call s:DeleteBuffer(l:currentBuf)
 endfunction
 
 function! DeleteInactive()
 	for b in getbufinfo()
 		if empty(b.windows)
-			exe ':bd '. b.bufnr
+			execute ':bd '. b.bufnr
 		endif
 	endfor
+endfunction
+
+function! s:IsFugitiveInstalled()
+    if exists('g:autoloaded_fugitive')
+        return v:true
+    else
+        return v:false
+    endif
+endfunction
+
+function! s:GetCurrentBuffer()
+    return bufnr('%')
+endfunction
+
+function! s:DeleteBuffer(bufnr)
+    execute ':bdelete ' . a:bufnr
 endfunction
