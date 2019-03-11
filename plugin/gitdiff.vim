@@ -10,7 +10,8 @@ function! GitDiff()
     let l:currentBuf = s:GetCurrentBuffer()
 	let l:lines = getline(line('^'), line('$'))
 	for line in l:lines
-		execute ':tabedit ' . line
+        let l:file = FugitiveWorkTree() . line
+		execute ':tabedit ' . l:file
 		execute ':Gdiff HEAD^'
 	endfor
     call s:DeleteBuffer(l:currentBuf)
