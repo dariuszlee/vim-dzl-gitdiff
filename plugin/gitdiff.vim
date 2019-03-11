@@ -9,16 +9,16 @@ function! GitDiff(...)
     if a:0 == 1
         let l:commit = a:1
     else
-        let l:commit = "HEAD^"
+        let l:commit = 'HEAD~'
     endif
 
 	execute ':Gsplit! diff --name-only HEAD HEAD^'
     let l:currentBuf = s:GetCurrentBuffer()
 	let l:lines = getline(line('^'), line('$'))
 	for line in l:lines
-        let l:file = FugitiveWorkTree() . line
+        let l:file = FugitiveWorkTree() . '/' . line
 		execute ':tabedit ' . l:file
-        let l:command = ':Gdiff ' . l:commit
+        let l:command = ':Gdiff ' . fnameescape(l:commit)
 		execute l:command
 	endfor
     call s:DeleteBuffer(l:currentBuf)
