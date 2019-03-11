@@ -1,9 +1,15 @@
-function! GitDiff()
+function! GitDiff(...)
 	" TODO add Vim-fugitive check and if we are in a valid git repo (ugly if
 	" it isn't
     if !s:IsFugitiveInstalled()
         echom "Please install vim-fugitive. Exiting"
         return 
+    endif
+
+    if a:0 == 1
+        let l:commit = a:1
+    else
+        let l:commit = "HEAD^"
     endif
 
 	execute ':Gsplit! diff --name-only HEAD HEAD^'
@@ -12,7 +18,8 @@ function! GitDiff()
 	for line in l:lines
         let l:file = FugitiveWorkTree() . line
 		execute ':tabedit ' . l:file
-		execute ':Gdiff HEAD^'
+        let l:command = ':Gdiff ' . l:commit
+		execute l:command
 	endfor
     call s:DeleteBuffer(l:currentBuf)
 endfunction
