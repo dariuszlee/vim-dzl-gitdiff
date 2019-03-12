@@ -21,7 +21,7 @@ function! GitDiff(...)
         let l:file = FugitiveWorkTree() . '/' . line
         echom l:file
 		execute ':tabedit ' . l:file
-        let l:command = ':Gdiff ' . fnameescape(l:commit)
+        let l:command = ':Gvdiff ' . fnameescape(l:commit)
 		execute l:command
 	endfor
     call s:DeleteBuffer(l:currentBuf)
