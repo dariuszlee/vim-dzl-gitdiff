@@ -8,18 +8,18 @@ function! GitDiff(...)
         return 
     endif
 
-    if a:0 == 1
+    if a:0 == 1 && trim(a:1) != ""
         let l:commit = a:1
     else
         let l:commit = 'HEAD~'
     endif
 
-	execute ':Gsplit! diff --name-only HEAD ' . l:commit
+    let l:gplit_command = ':Gsplit! diff --name-only HEAD ' . l:commit
+	execute l:gplit_command
     let l:currentBuf = s:GetCurrentBuffer()
 	let l:lines = getline(line('^'), line('$'))
 	for line in l:lines
         let l:file = FugitiveWorkTree() . '/' . line
-        echom l:file
 		execute ':tabedit ' . l:file
         let l:command = ':Gvdiff ' . fnameescape(l:commit)
 		execute l:command
