@@ -12,11 +12,12 @@ function! GitDiff(...)
         let l:commit = 'HEAD~'
     endif
 
-	execute ':Gsplit! diff --name-only HEAD HEAD^'
+	execute ':Gsplit! diff --name-only HEAD ' . l:commit
     let l:currentBuf = s:GetCurrentBuffer()
 	let l:lines = getline(line('^'), line('$'))
 	for line in l:lines
         let l:file = FugitiveWorkTree() . '/' . line
+        echom l:file
 		execute ':tabedit ' . l:file
         let l:command = ':Gdiff ' . fnameescape(l:commit)
 		execute l:command
