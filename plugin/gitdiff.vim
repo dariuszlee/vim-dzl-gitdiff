@@ -1,3 +1,5 @@
+command! -nargs=? GitDiff call GitDiff("<args>")
+
 function! GitDiff(...)
 	" TODO add Vim-fugitive check and if we are in a valid git repo (ugly if
 	" it isn't
